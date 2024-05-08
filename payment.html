@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Payment Page</h1>
+    <div id="payment-form">
+        <label for="card-element">
+            Credit or debit card
+        </label>
+        <div id="card-element">
+            <!-- A Stripe Element will be inserted here. -->
+        </div>
+
+        <!-- Used to display form errors. -->
+        <div id="card-errors" role="alert"></div>
+
+        <button id="submit">
+            Pay Now
+        </button>
+    </div>
+
+    <div id="payment-success" style="display: none;">
+        <h2>Payment Successful!</h2>
+        <p>Details:</p>
+        <div id="payment-details"></div>
+    </div>
+
+    <script>
+        // Create a Stripe client.
+        var stripe = Stripe('YOUR_STRIPE_PUBLIC_KEY');
+
+        // Create an instance of Elements.
+        var elements = stripe.elements();
+
+        // Custom styling can be passed to options when creating an Element.
+        var style = {
+            base: {
+                fontSize: '16px',
+                color: '#32325d',
+            }
+        };
+
+        // Create an instance of the card Element.
+        var card = elements.create('card', { style: style });
+
+        // Add an instance of the card Element into the `card-element` div.
+        card.mount('#card-element');
+
+        // Handle form submission.
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            stripe.createToken(card).then(function(result) {
+                if (result.error) {
+                    // Inform the user if there was an error.
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // Send the token to your server.
+                    stripeTokenHandler(result.token);
+                }
+            });
+        });
+
+        // Submit the form with the token ID.
+        function stripeTokenHandler(token) {
+            // You can send the token ID to your server to initiate a payment.
+            // Replace the following with your own server-side logic to handle payment processing.
+
+            // Simulating a successful payment
+            setTimeout(function() {
+                document.getElementById('payment-form').style.display = 'none';
+                document.getElementById('payment-success').style.display = 'block';
+                document.getElementById('payment-details').innerHTML = `
+                    <p>Amount: $50</p>
+                    <p>Transaction ID: ${token.id}</p>
+                    <p>Date: ${new Date()}</p>
+                `;
+            }, 2000); // Simulating a 2-second payment processing time
+        }
+
+        // Set a timer to redirect after 10 minutes
+        setTimeout(function() {
+            window.location.href = 'payment-expired.html';
+        }, 10 * 60 * 1000); // 10 minutes in milliseconds
+    </script>
+</body>
+</html>

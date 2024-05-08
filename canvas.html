@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shapes Table</title>
+<style>
+    table {
+        border-collapse: collapse;
+    }
+    table, th, td {
+        border: 1px solid black;
+    }
+    canvas {
+        border: 1px solid black;
+    }
+</style>
+</head>
+<body>
+
+<table>
+    <thead>
+        <tr>
+            <th>Serial Number</th>
+            <th>Shape Name</th>
+            <th>Shape Drawing</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Rectangle</td>
+            <td><canvas id="rectangleCanvas" width="100" height="50"></canvas></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Circle</td>
+            <td><canvas id="circleCanvas" width="100" height="100"></canvas></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Triangle</td>
+            <td><canvas id="triangleCanvas" width="100" height="100"></canvas></td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    // Draw rectangle
+    var rectangleCanvas = document.getElementById("rectangleCanvas");
+    var rectCtx = rectangleCanvas.getContext("2d");
+    rectCtx.fillStyle = "red";
+    rectCtx.fillRect(0, 0, rectangleCanvas.width, rectangleCanvas.height);
+
+    // Draw circle
+    var circleCanvas = document.getElementById("circleCanvas");
+    var circleCtx = circleCanvas.getContext("2d");
+    circleCtx.beginPath();
+    circleCtx.arc(circleCanvas.width/2, circleCanvas.height/2, 40, 0, 2 * Math.PI);
+    circleCtx.fillStyle = "blue";
+    circleCtx.fill();
+
+    // Draw triangle
+    var triangleCanvas = document.getElementById("triangleCanvas");
+    var triangleCtx = triangleCanvas.getContext("2d");
+    triangleCtx.beginPath();
+    triangleCtx.moveTo(50, 0);
+    triangleCtx.lineTo(0, 100);
+    triangleCtx.lineTo(100, 100);
+    triangleCtx.closePath();
+    triangleCtx.fillStyle = "green";
+    triangleCtx.fill();
+</script>
+
+</body>
+</html>
